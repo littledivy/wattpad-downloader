@@ -271,7 +271,7 @@ def get_book(initial_url):
         return epubfile
     else:
         print("Epub file already exists, not updating")
-        return "null"
+        return epubfile
 
 """
 if __name__ == "__main__":
