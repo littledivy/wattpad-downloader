@@ -1,5 +1,4 @@
 flask
-random
 flask_cors
 bs4
 ebooklib
