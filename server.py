@@ -52,5 +52,7 @@ def random_number():
 def catch_all():
     return render_template("index.html")
 
+port = int(os.environ.get("PORT", 5000))
+app.run(host='0.0.0.0', port=port)
 cleanup = Thread(target=cleanupFiles)
 cleanup.start()
