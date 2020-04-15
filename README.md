@@ -1,4 +1,5 @@
-# Wattpad Story Downloader
+![alt text](./public/logo.png "Wutpad logo")
+
 Wattpad2Epub downloads and converts Wattpad books into Epub files you can use
 with your favorite ebook reader.
 
