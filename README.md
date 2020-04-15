@@ -1,7 +1,7 @@
 ![alt text](./public/logo.png "Wutpad logo")
 
 ![Vue CI](https://github.com/divy-work/wattpad-downloader/workflows/Vue%20CI/badge.svg)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=wutpad)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=wutpad)
 
 Wattpad2Epub downloads and converts Wattpad books into Epub files you can use
 with your favorite ebook reader.
