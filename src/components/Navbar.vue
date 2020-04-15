@@ -7,7 +7,7 @@
                 icon="user"
                 size="is-small">
             </b-icon>
-            <b>WutPad</b>
+            <b><img src="logo.png" /></b>
             </b-navbar-item>
         </template>
         <template slot="end">
