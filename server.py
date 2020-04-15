@@ -36,13 +36,17 @@ def cleanupFiles():
 
 app = Flask(__name__,
             static_folder = "./dist/",
-            template_folder = "./dist")
+            template_folder= "./dist/")
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/cdn/<path:filename>')
 def custom_static(filename):
     return send_from_directory('./', filename)
+
+@app.route('/<path:filename>')
+def stat(filename):
+    return send_from_directory('./dist', filename)
 
 @app.route('/api', methods=["POST"])
 def random_number():
@@ -54,5 +58,6 @@ def catch_all():
 
 port = int(os.environ.get("PORT", 5000))
 app.run(host='0.0.0.0', port=port)
+
 cleanup = Thread(target=cleanupFiles)
 cleanup.start()
