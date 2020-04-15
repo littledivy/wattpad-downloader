@@ -2,8 +2,6 @@
 
 /__pycache__
 /node_modules
-/books
-
 # local env files
 .env.local
 .env.*.local
