@@ -156,7 +156,8 @@ def get_chapter(url, i):
         text.append('</div>\n')
     chapter = epub.EpubHtml(title=chaptertitle, file_name=chapterfile,
                             lang='en')
-    chapter.content = clean_text("".join(text))
+    chapter_header = f"<h2>{chaptertitle}</h2>"
+    chapter.content = chapter_header + clean_text("".join(text))
     return chapter
 
 
