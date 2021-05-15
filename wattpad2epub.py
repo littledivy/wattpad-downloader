@@ -126,6 +126,7 @@ if VERSION[1] == 15:
 
 
 def clean_text(text):
+    text = re.sub(r'</?pre>', '', text)
     text = re.sub(r'<p data-p-id=".{32}">', '<p>', text)
     # text = re.sub(r'&nbsp;', '', text)
     text = re.sub(r'\xa0', '', text)
@@ -137,15 +138,15 @@ def get_page(text_url):
     return text
 
 
-def get_chapter(url):
+def get_chapter(url, i):
     pagehtml = get_html(url)
     print("Current url: " + url)
     pages_re = re.compile('"pages":([0-9]*),', re.IGNORECASE)
     pages = int(pages_re.search(str(pagehtml)).group(1))
     print("Pages in this chapter: {}".format(pages))
     text = []
-    chaptertitle = pagehtml.select('h2')[0].get_text().strip()
-    chapterfile = "{}.xhtml".format(chaptertitle.replace(" ", "-"))
+    chaptertitle = pagehtml.select('.h2')[0].get_text().strip()
+    chapterfile = f"chapter-{i:0>3d}.xhtml"
     for i in range(1, pages+1):
         page_url = url + "/page/" + str(i)
         print("Working on: " + page_url)
@@ -155,7 +156,7 @@ def get_chapter(url):
         text.append('</div>\n')
     chapter = epub.EpubHtml(title=chaptertitle, file_name=chapterfile,
                             lang='en')
-    chapter.content = "".join(text)
+    chapter.content = clean_text("".join(text))
     return chapter
 
 
@@ -164,10 +165,10 @@ def get_book(initial_url):
     html = get_html(initial_url)
 
     # Get basic book information
-    author = html.select('div.author-info strong a')[0].get_text()
-    title = html.select('h1')[0].get_text().strip()
-    description = html.select('h2.description')[0].get_text()
-    coverurl = html.select('div.cover.cover-lg img')[0]['src']
+    author = html.select('div.author-info:nth-child(1) > div:nth-child(2) > a')[0].get_text()
+    title = html.select('.story-info__title')[0].get_text().strip()
+    description = html.select('.description-text')[0].get_text()
+    coverurl = html.select('.story-cover > img')[0]['src']
     labels = ['Wattpad']
     for label in html.select('div.tags a'):
         if '/' in label['href']:
@@ -183,8 +184,7 @@ def get_book(initial_url):
     # print(next_page_url)
 
     # Get list of chapters
-    chapterlist_url = "{}{}".format(initial_url, "/parts")
-    chapterlist = get_html(chapterlist_url).select('ul.table-of-contents a')
+    chapterlist = html.select('.story-parts')[0].select('ul:nth-child(1) li a')
 
     # Remove from the file name those characters that Microsoft does NOT allow.
     # This also affects the FAT filesystem used on most phone/tablet sdcards
@@ -242,13 +242,15 @@ def get_book(initial_url):
         book.add_item(intro_ch)
 
         allchapters = []
+        i = 1
         for item in chapterlist:
             chaptertitle = item.get_text().strip().replace("/", "-")
             if chaptertitle.upper() != "A-N":
                 print("Working on: {}".format(chaptertitle).encode("utf-8"))
-                chapter = get_chapter("{}{}".format(base_url, item['href']))
+                chapter = get_chapter("{}{}".format(base_url, item['href']), i)
                 book.add_item(chapter)
                 allchapters.append(chapter)
+                i = i + 1
 
         # Define Table of Contents
         book.toc = (epub.Link('intro.xhtml', 'Introduction', 'intro'),
@@ -273,7 +275,7 @@ def get_book(initial_url):
         print("Epub file already exists, not updating")
         return epubfile
 
-"""
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Download stories from wattpad.com and store them as"
@@ -293,4 +295,3 @@ if __name__ == "__main__":
         print(args)
 
     get_book(args.initial_url[0])
-"""
