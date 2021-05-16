@@ -243,8 +243,7 @@ def get_book(initial_url):
         book.add_item(intro_ch)
 
         allchapters = []
-        i = 1
-        for item in chapterlist:
+        for i, item in enumerate(chapterlist, start=1):
             chaptertitle = item.get_text().strip().replace("/", "-")
             if chaptertitle.upper() != "A-N":
                 print("Working on: {}".format(chaptertitle).encode("utf-8"))
