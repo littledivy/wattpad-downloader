@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "buefy": "^0.8.15",
-    "core-js": "^3.6.4",
+    "core-js": "^3.20.3",
     "vue": "^2.6.11",
     "vuelidate": "^0.7.5"
   },
