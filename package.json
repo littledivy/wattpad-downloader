@@ -12,7 +12,7 @@
     "buefy": "^0.9.0",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
-    "vuelidate": "^0.7.5"
+    "vuelidate": "^0.7.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
